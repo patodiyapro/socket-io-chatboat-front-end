@@ -1,0 +1,147 @@
+<div class="container-fluid h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-md-4 col-xl-3 chat">
+      <div class="card mb-sm-3 mb-md-0 contacts_card">
+        <div class="card-header">
+          <div class="input-group">
+            <input
+              type="text"
+              placeholder="Search..."
+              name=""
+              class="form-control search"
+            />
+            <div class="input-group-prepend">
+              <span class="input-group-text search_btn"
+                ><i class="fas fa-search"></i
+              ></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body contacts_body">
+          <ul class="contacts">
+            <li class="active" *ngFor="let user of userConnected">
+              <div class="d-flex bd-highlight">
+                <div class="img_cont">
+                  <img
+                    src="https://picsum.photos/id/322/200/200"
+                    class="rounded-circle user_img"
+                  />
+                  <span class="online_icon"></span>
+                </div>
+                <div class="user_info">
+                  <span>{{ user }}</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer"></div>
+      </div>
+     </div>
+    <div class="col-md-8 col-xl-6 chat">
+      <div class="card">
+        <div class="card-header msg_head">
+          <div class="bd-highlight">
+            <div class="d-inline-flex user_info" *ngFor="let user of userConnected">
+              <span>{{ user }}</span>
+            </div>
+            <p id="typing-event"></p>
+          </div>
+          <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+          <div class="action_menu">
+            <ul>
+              <li><i class="fas fa-user-circle"></i> View profile</li>
+              <li data-toggle="modal" data-target="#exampleModal"><i class="fas fa-users"></i> change Name</li>
+              <li data-toggle="modal" data-target="#addUserModel"><i class="fas fa-plus"></i> Add Friends</li>
+              <li><i class="fas fa-ban"></i> Block</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body msg_card_body">
+          <div *ngFor="let chat of chatUser; let i of index" [className]="i % 2 == 0 ? 'd-flex mb-4 justify-content-start' : 'd-flex mb-4 justify-content-end'">
+            <div class="img_cont_msg mr-3" *ngIf="i % 2 == 0">
+              {{chat.nickname ? chat.nickname.slice(0, 2): 'Un'}}
+            </div>
+            <div class="msg_cotainer">
+              {{chat.message}}
+              <span class="msg_time">{{chat.time | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="img_cont_msg ml-3" *ngIf="i % 2 !== 0">
+              {{chat.nickname ? chat.nickname.slice(0, 2): 'Un'}}
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="input-group">
+            <input
+              type="text"
+              id="sendmsg"
+              class="form-control type_msg"
+              [(ngModel)]="message"
+              (keyup)="$event.keyCode == 13 && sendMessage()"
+              placeholder="Type your message..."
+            />
+            <div class="input-group-append" (click)="sendMessage()">
+              <span class="input-group-text send_btn"
+                ><i class="fas fa-location-arrow"></i
+              ></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Change my Username</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="newName"
+              (keyup)="$event.keyCode == 13 && updateuserName()"
+              placeholder="Type your message..."
+            />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateuserName()">Update User Name</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addUserModel" tabindex="-1" role="dialog" aria-labelledby="addUserModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add you friend</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="addNewUser"
+              (keyup)="$event.keyCode == 13 && addUser()"
+              placeholder="Type your message..."
+            />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addUser()">Add User</button>
+      </div>
+    </div>
+  </div>
+</div>
